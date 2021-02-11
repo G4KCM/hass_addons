@@ -9,9 +9,9 @@
     "boot": "auto",
 	"hassio_api": true,
     "options": {
-        "comfortip":"192.168.50.52",
-        "comfortport":"1002",
-        "comfortpin":"8705"
+        "comfortip":"192.168.1.1",
+        "comfortport":"1001",
+        "comfortpin":"1234"
     },
     "schema": {
         "comfortip":"str",
