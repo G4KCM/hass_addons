@@ -23,8 +23,8 @@ tree = ET.parse(opener.open("http://%s/fresh.xml" % PAPAGOIP))
 lst = tree.findall('.//{http://www.papouch.com/xml/papago/act}sns')
 for item in lst:
     sensorname = item.attrib['name'] 
-    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_temp/config", "{\"name\":\"Papago "+ sensorname +" Temperature\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_temp }}\"}" ,qos=0,retain=True)
-    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_hum/config", "{\"name\":\"Papago "+ sensorname +" Humidity\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_hum }}\"}" ,qos=0,retain=True)
+    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_temp/config", "{\"name\":\"Papago "+ sensorname +" Temperature\",\"device_class\":\"temperature\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_temp }}\"}" ,qos=0,retain=True)
+    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_hum/config", "{\"name\":\"Papago "+ sensorname +" Humidity\",\"device_class\":\"humidity\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_hum }}\"}" ,qos=0,retain=True)
 
 def settemps():
     opener = urllib.request.build_opener()

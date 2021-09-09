@@ -24,7 +24,7 @@ for alpha in alphas:
     tree = ET.parse(opener.open("http://%s/data/static.xml" % alpha))
     lst = tree.findall('.//HEATAREA_NAME')
     for item in lst:
-        client.publish("homeassistant/sensor/alpha2_"+item.text.lower()+"/config", "{\"name\":\"Alpha2 "+ item.text +" Temperature\",\"platform\":\"mqtt\",\"state_topic\":\"/alpha2/temps.json\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{ value_json."+item.text+" }}\"}" ,qos=0,retain=True)
+        client.publish("homeassistant/sensor/alpha2_"+item.text.lower()+"/config", "{\"name\":\"Alpha2 "+ item.text +" Temperature\",\"device_class\":\"temperature\",\"platform\":\"mqtt\",\"state_topic\":\"/alpha2/temps.json\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{ value_json."+item.text+" }}\"}" ,qos=0,retain=True)
 
 def settemps():
     opener = urllib.request.build_opener()
