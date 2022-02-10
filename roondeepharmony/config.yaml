@@ -1,6 +1,7 @@
 name: Deep Harmony
 version: "2.6.0"
-panel_icon: "mdi:cctv"
+apparmor: false
+panel_icon: "mdi:music"
 panel_title: Deep Harmony
 slug: deepharmony
 description: A Roon Extension for Logitech Harmony
@@ -10,7 +11,8 @@ boot: auto
 panel_admin: false
 host_network: true
 full_access: false
-legacy: true
+ingress: true
+ingress_port: 9080
 options: {}
 schema: false
 arch:
