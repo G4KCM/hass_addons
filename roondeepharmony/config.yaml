@@ -11,7 +11,7 @@ boot: auto
 panel_admin: false
 host_network: true
 full_access: false
-webui: http://[HOST]:[PORT:9080/console]
+webui: http://[HOST]:[PORT:9080]/console
 options: {}
 schema: false
 arch:
