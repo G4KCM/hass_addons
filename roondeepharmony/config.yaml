@@ -10,10 +10,9 @@ boot: auto
 panel_admin: false
 host_network: true
 full_access: false
-map:
-  - "config:rw"
+init: false
 options: {}
-schema: {}
+schema: false
 arch:
   - amd64
   - armv7
