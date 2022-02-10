@@ -10,7 +10,7 @@ boot: auto
 panel_admin: false
 host_network: true
 full_access: false
-init: false
+legacy: true
 options: {}
 schema: false
 arch:
