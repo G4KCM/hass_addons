@@ -1,28 +1,13 @@
-name: Deep Harmony
-version: "2.6.7"
-panel_icon: "mdi:cctv"
-panel_title: Deep Harmony
-slug: deepharmony
-description: A Roon Extension for Logitech Harmony
-url: "https://github.com/Khazul/roon-extension-deep-harmony-release"
-startup: application
-boot: auto
-webui: "http://[HOST]:[PORT:9080]/console"
-ingress: true
-ingress_port: 9080
-ingress_entry: /console
-panel_admin: false
-host_network: true
-usb: false
-tmpfs: true
-full_access: false
-options: {}
-schema: {}
-services:
-arch:
-  - amd64
-  - armv7
-  - aarch64
-map:
-  - "media:rw"
-  - "config:rw"
+{
+  "name": "Deep Harmony",
+  "version": "2.6.7",
+  "slug": "deepharmony",
+  "description": "A Roon Extension for Logitech Harmony",
+  "arch": ["aarch64", "amd64", "armv7"],
+  "startup": "application",
+  "services": {},
+  "boot": "auto",
+  "host_network": "true",
+  "options": {},
+  "schema": {}
+}
