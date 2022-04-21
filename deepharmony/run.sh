@@ -5,7 +5,7 @@ if [  ! -d /addons/roon-extension-deep-harmony ]; then
     chmod 777 /addons/roon-extension-deep-harmony/roon-extension-deep-harmony
     cp readme.html /addons/roon-extension-deep-harmony/
 fi
-cd /addons/roon-extension-deep-harmony/
+cd "$(/addons/roon-extension-deep-harmony/ "$0")"
 until env DEBUG="*" ./roon-extension-deep-harmony; do
     echo "roon-extension-deep-harmony terminated with exit code $?.  Restarting.." >&2
     if [ -f ./roon-extension-deep-harmony.old ]; then
