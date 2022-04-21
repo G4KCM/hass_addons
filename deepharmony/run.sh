@@ -1,5 +1,6 @@
 #!/bin/sh
 cd /data
+ls -las
 until env DEBUG="*" ./roon-extension-deep-harmony; do
     echo "roon-extension-deep-harmony terminated with exit code $?.  Restarting.." >&2
     if [ -f ./roon-extension-deep-harmony.old ]; then
