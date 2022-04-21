@@ -6,8 +6,9 @@ webui: "http://[HOST]:[PORT:9080]/console"
 arch:
   - armv7
   - amd64
-  - i386
 startup: application
 boot: auto
 hassio_api: true
 host_network: true
+map:
+  - addons:rw
