@@ -1,5 +1,5 @@
 #!/bin/sh
-cd /share/roon-extension-deep-harmony/
+cd /addons/roon-extension-deep-harmony/
 ls -las
 until env DEBUG="*" ./roon-extension-deep-harmony; do
     echo "roon-extension-deep-harmony terminated with exit code $?.  Restarting.." >&2

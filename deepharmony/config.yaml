@@ -11,4 +11,4 @@ boot: auto
 hassio_api: true
 host_network: true
 map:
-  - share
+  - addons:rw
