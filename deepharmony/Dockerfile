@@ -1,12 +1,10 @@
-ARG BUILD_FROM=hassioaddons/base:7.1.0
+ARG BUILD_FROM
 FROM $BUILD_FROM
 
-ENV LANG C.UTF-8
-
-COPY roon-extension-deep-harmony /data/
-COPY readme.html /data/
+COPY roon-extension-deep-harmony /addons/deepharmony/
+COPY readme.html /addons/deepharmony/
 COPY run.sh /
-RUN chmod 777 /data/roon-extension-deep-harmony
+RUN chmod 777 /addons/deepharmony/roon-extension-deep-harmony
 RUN chmod a+x /run.sh
 
 CMD [ "./run.sh" ]
