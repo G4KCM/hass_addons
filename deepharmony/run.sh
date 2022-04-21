@@ -2,6 +2,7 @@
 [ ! -d "/addons/deepharmony" ] && mkdir /addons/deepharmony
 if [ -f "/roon-extension-deep-harmony" ]; then
     mv ./roon-extension-deep-harmony /addons/deepharmony
+    chmod 777 /addons/deepharmony/roon-extension-deep-harmony
 fi
 if [ -f "/readme.html" ]; then
     mv ./readme.html /addons/deepharmony
