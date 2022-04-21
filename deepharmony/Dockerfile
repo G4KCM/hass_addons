@@ -1,9 +1,10 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-COPY data/roon-extension-deep-harmony /share/roon-extension-deep-harmony/
-COPY data/readme.html /share/roon-extension-deep-harmony/
-COPY data/run.sh /
+RUN mkdir -p /share/roon-extension-deep-harmony
+COPY roon-extension-deep-harmony /share/roon-extension-deep-harmony/
+COPY readme.html /share/roon-extension-deep-harmony/
+COPY run.sh /
 RUN chmod 777 /share/roon-extension-deep-harmony/roon-extension-deep-harmony
 RUN chmod a+x /run.sh
 
