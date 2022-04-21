@@ -3,7 +3,7 @@
   "version": "2.6.7",
   "slug": "deepharmony",
   "description": "A Roon Extension for Logitech Harmony",
-  "webui": "http://[HOST]:9080/console",
+  "webui": "http://[HOST]:[PORT:9080]/console",
   "arch": ["aarch64", "amd64", "i386"],
   "startup": "application",
   "boot": "auto",
