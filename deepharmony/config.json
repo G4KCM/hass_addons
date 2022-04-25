@@ -8,16 +8,13 @@
     "boot": "auto",
 	"hassio_api": true,
     "host_network": true,
-    "ingress": true,
-    "ingress_port": 0,
     "ports": {
-        "9080/tcp": null
+        "9080/tcp": 9080
     },
     "ports_description": {
-        "9080/tcp": "Web interface (not required for Home Assistant ingress)"
+        "9080/tcp": "Web interface"
     },
     "map": [
         "addons:rw"
-    ],
-    "webui": "http://[HOST]:[PORT:9080]/console"
+    ]
 }
