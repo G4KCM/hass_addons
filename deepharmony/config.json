@@ -1,0 +1,23 @@
+{
+    "name": "Deep Harmony",
+    "version": "2.6.7",
+    "slug": "deepharmony",
+    "description": "A Roon Extension for Logitech Harmony",
+    "arch": ["amd64","armv7"],
+    "startup": "application",
+    "boot": "auto",
+	"hassio_api": true,
+    "host_network": true,
+    "ingress": true,
+    "ingress_port": 0,
+    "ports": {
+        "9080/tcp": null
+    },
+    "ports_description": {
+        "9080/tcp": "Web interface (not required for Home Assistant ingress)"
+    },
+    "map": [
+        "addons:rw"
+    ],
+    "webui": "http://[HOST]:[PORT:9080]/console"
+}
