@@ -89,7 +89,7 @@ def scrape_streams():
                     if loops == 3:
                         jsonproduction = requests.get(urlp, auth=auth, verify=False)
                         if (jsonproduction.status_code == 200):
-                            prod_string = jsonproduction.json() 
+                            prod_string = jsonproduction.content
                             client.publish(topic= '/envoy/production.json' , payload= prod_string, qos=0 )
                         loops = 0
                     loops += 1
