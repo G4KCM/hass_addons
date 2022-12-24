@@ -1,5 +1,5 @@
 {
-    "name": "Envy 2 MQTT",
+    "name": "Envoy 2 MQTT",
     "version": "1.0",
     "slug": "envoy2mqtt",
     "description": "Homeassistant interface with Enphase Envoy Metered",
