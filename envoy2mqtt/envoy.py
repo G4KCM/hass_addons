@@ -79,23 +79,20 @@ def scrape_streams():
     while True:
         try:
             url = 'http://%s/stream/meter' % ENVOYIP
+            urlp = 'http://%s/production.json' % ENVOYIP
             stream = requests.get(url, auth=auth, stream=True, timeout=5)
             for line in stream.iter_lines():
                 if line.startswith(marker):
                     data = json.loads(line.replace(marker, b''))
-                    json_string = json.dumps(data)
-                    #pp.pprint(json_string)
-                                    
+                    json_string = json.dumps(data)         
                     client.publish(topic= '/envoy/realtime.json' , payload= json_string, qos=0 )
-        
-            if (loops == 3):
-                url = 'http://%s/production.json' % ENVOYIP
-                jsonproduction = requests.get(url, auth=auth, verify=False)
-                if (jsonproduction.status_code == 200):                
-                    client.publish(topic= '/envoy/production.json' , payload= jsonproduction.json(), qos=0 )
-                loops = 0
-            loops += 1
-            time.sleep(5)
+                    if (loops == 3):
+                        jsonproduction = requests.get(urlp, auth=auth, verify=False)
+                        if (jsonproduction.status_code == 200):                
+                            client.publish(topic= '/envoy/production.json' , payload= jsonproduction.json(), qos=0 )
+                        loops = 0
+                    loops += 1
+                    time.sleep(5)
         except requests.exceptions.RequestException as e:
             print(dt_string, ' Exception fetching stream data: %s' % e)
 
