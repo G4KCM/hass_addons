@@ -73,11 +73,11 @@ dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 user = 'installer'
 auth = HTTPDigestAuth(user, ENVOYPASS)
 marker = b'data: '
-loops=1
 
 def scrape_streams():
     while True:
         try:
+            loops = 1
             url = 'http://%s/stream/meter' % ENVOYIP
             urlp = 'http://%s/production.json' % ENVOYIP
             stream = requests.get(url, auth=auth, stream=True, timeout=5)
@@ -86,7 +86,7 @@ def scrape_streams():
                     data = json.loads(line.replace(marker, b''))
                     json_string = json.dumps(data)         
                     client.publish(topic= '/envoy/realtime.json' , payload= json_string, qos=0 )
-                    if (loops == 3):
+                    if loops == 3:
                         jsonproduction = requests.get(urlp, auth=auth, verify=False)
                         if (jsonproduction.status_code == 200):                
                             client.publish(topic= '/envoy/production.json' , payload= jsonproduction.json(), qos=0 )
