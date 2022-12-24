@@ -88,8 +88,9 @@ def scrape_streams():
                     client.publish(topic= '/envoy/realtime.json' , payload= json_string, qos=0 )
                     if loops == 3:
                         jsonproduction = requests.get(urlp, auth=auth, verify=False)
-                        if (jsonproduction.status_code == 200):                
-                            client.publish(topic= '/envoy/production.json' , payload= jsonproduction.json(), qos=0 )
+                        if (jsonproduction.status_code == 200):
+                            prod_string = jsonproduction.json() 
+                            client.publish(topic= '/envoy/production.json' , payload= prod_string, qos=0 )
                         loops = 0
                     loops += 1
                     time.sleep(5)
