@@ -63,7 +63,7 @@ client.publish(topic= "homeassistant/sensor/envoy_total_l2_frequency/config", pa
 client.publish(topic= "homeassistant/sensor/envoy_total_l3_frequency/config", payload= "{\"name\":\"Envoy Total Frequency L3\",\"device_class\":\"power\",\"platform\":\"mqtt\",\"state_class\":\"measurement\",\"state_topic\":\"/envoy/realtime.json\",\"unit_of_measurement\":\"Hz\",\"value_template\":\"{{ value_json['total-consumption']['ph-c']['f']|float|round(2)}}\",\"icon\":\"mdi:current-ac\"}",qos=0,retain=True)
 
 client.publish(topic= "homeassistant/sensor/envoy_solar_daily_production/config", payload= "{\"name\":\"Envoy Solar Daily Production\",\"device_class\":\"energy\",\"platform\":\"mqtt\",\"state_class\":\"measurement\",\"state_topic\":\"/envoy/production.json\",\"unit_of_measurement\":\"kWh\",\"value_template\":\"{{ value_json['production'][1]['whToday']|float/1000|round(2)}}\",\"icon\":\"mdi:current-ac\"}",qos=0,retain=True)
-client.publish(topic= "homeassistant/sensor/envoy_solar_weekly_production/config", payload= "{\"name\":\"Envoy Solar Weekly\",\"device_class\":\"energy\",\"platform\":\"mqtt\",\"state_class\":\"measurement\",\"state_topic\":\"/envoy/production.json\",\"unit_of_measurement\":\"kWh\",\"value_template\":\"{{ value_json['production'][1]['whLastSevenDays']|float/1000|round(2)}}\",\"icon\":\"mdi:current-ac\"}",qos=0,retain=True)
+client.publish(topic= "homeassistant/sensor/envoy_solar_weekly_production/config", payload= "{\"name\":\"Envoy Solar Weekly Production\",\"device_class\":\"energy\",\"platform\":\"mqtt\",\"state_class\":\"measurement\",\"state_topic\":\"/envoy/production.json\",\"unit_of_measurement\":\"kWh\",\"value_template\":\"{{ value_json['production'][1]['whLastSevenDays']|float/1000|round(2)}}\",\"icon\":\"mdi:current-ac\"}",qos=0,retain=True)
 client.publish(topic= "homeassistant/sensor/envoy_solar_lifetime_production/config", payload= "{\"name\":\"Envoy Solar Lifetime Production\",\"device_class\":\"energy\",\"platform\":\"mqtt\",\"state_class\":\"measurement\",\"state_topic\":\"/envoy/production.json\",\"unit_of_measurement\":\"kWh\",\"value_template\":\"{{ value_json['production'][1]['whLifetime']|float/1000|round(2)}}\",\"icon\":\"mdi:current-ac\"}",qos=0,retain=True)
 
 
@@ -73,8 +73,9 @@ dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 user = 'installer'
 auth = HTTPDigestAuth(user, ENVOYPASS)
 marker = b'data: '
+loops=1
 
-def scrape_stream():
+def scrape_streams():
     while True:
         try:
             url = 'http://%s/stream/meter' % ENVOYIP
@@ -86,27 +87,21 @@ def scrape_stream():
                     #pp.pprint(json_string)
                                     
                     client.publish(topic= '/envoy/realtime.json' , payload= json_string, qos=0 )
-                    time.sleep(4)
-        except requests.exceptions.RequestException as e:
-            print(dt_string, ' Exception fetching stream data: %s' % e)
-
-def scrape_production():
-    while True:
-        try:
-            url = 'http://%s/production.json' % ENVOYIP
-            jsonproduction = requests.get(url, auth=auth, verify=False)
-            if (jsonproduction.status_code == 200):                
+        
+            if (loops == 3):
+                url = 'http://%s/production.json' % ENVOYIP
+                jsonproduction = requests.get(url, auth=auth, verify=False)
+                if (jsonproduction.status_code == 200):                
                     client.publish(topic= '/envoy/production.json' , payload= jsonproduction.json(), qos=0 )
-                    time.sleep(15)
+                loops = 0
+            loops += 1
+            time.sleep(5)
         except requests.exceptions.RequestException as e:
             print(dt_string, ' Exception fetching stream data: %s' % e)
 
 def main():
-    stream_thread = threading.Thread(target=scrape_stream)
-    production_thread = threading.Thread(target=scrape_production)
-    #    stream_thread.setDaemon(True)
+    stream_thread = threading.Thread(target=scrape_streams)
     stream_thread.start()
-    production_thread.start()
 
 if __name__ == '__main__':
     main()
