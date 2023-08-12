@@ -20,26 +20,21 @@ client.loop_start()
 
 opener = urllib.request.build_opener()
 tree = ET.parse(opener.open("http://%s/fresh.xml" % PAPAGOIP))
+dev = tree.find('.//{http://www.papouch.com/xml/papago/act}status').attrib['location']
 lst = tree.findall('.//{http://www.papouch.com/xml/papago/act}sns')
 for item in lst:
-    sensorname = item.attrib['name'] 
-    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_temp/config", "{\"name\":\"Papago "+ sensorname +" Temperature\",\"device_class\":\"temperature\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_temp }}\"}" ,qos=0,retain=True)
-    client.publish("homeassistant/sensor/papago_"+sensorname.lower().replace(" ", "_")+"_hum/config", "{\"name\":\"Papago "+ sensorname +" Humidity\",\"device_class\":\"humidity\",\"platform\":\"mqtt\",\"state_topic\":\"/papago/temps.json\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{ value_json."+sensorname.lower().replace(" ", "_")+"_hum }}\"}" ,qos=0,retain=True)
+    id = item.attrib['id']
+    sensorname = item.attrib['name']
+    client.publish("homeassistant/sensor/"+dev+"/temp"+id+"/config", "{\"name\":\""+sensorname+" Temperature\",\"device_class\":\"temperature\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"value_template\": \"{{ value_json.temperature}}\",\"unit_of_measurement\":\"°C\",\"unique_id\":\""+dev+"_T_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"}}" ,qos=0,retain=True)
+    client.publish("homeassistant/sensor/"+dev+"/hum"+id+"/config", "{\"name\":\""+sensorname+" Humidity\",\"device_class\":\"humidity\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"value_template\": \"{{ value_json.humidity}}\",\"unit_of_measurement\":\"%\",\"unique_id\":\""+dev+"_H_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"}}" ,qos=0,retain=True)
 
 def settemps():
     opener = urllib.request.build_opener()
-    jsonstring = "{" 
     tree = ET.parse(opener.open("http://%s/fresh.xml" % PAPAGOIP))
     for sensor in tree.iter('{http://www.papouch.com/xml/papago/act}sns'):
         sensorname = sensor.attrib['name'].lower().replace(" ", "_")
-        if len(jsonstring) > 1:
-            jsonstring += ","
-        jsonstring += "\""+sensorname+"_temp\":"
-        jsonstring += "\""+sensor.attrib['val']+"\""
-        jsonstring += ",\""+sensorname+"_hum\":"
-        jsonstring += "\""+sensor.attrib['val2']+"\""
-    jsonstring += "}"
-    client.publish("/papago/temps.json", payload=jsonstring, qos=0, retain=True)
+        jsonstring = "{\"temperature\":\""+sensor.attrib['val']+"\", \"humidity\":\""+sensor.attrib['val2']+"\"}"
+        client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
 
 if __name__ == '__main__':
     scheduler = BlockingScheduler()
