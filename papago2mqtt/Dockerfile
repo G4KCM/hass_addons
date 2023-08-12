@@ -4,8 +4,7 @@ FROM ${BUILD_FROM}
 ENV LANG C.UTF-8
 
 RUN apk add --no-cache python3
-RUN pip3 install paho-mqtt
-RUN pip3 install apscheduler
+RUN pip3 install paho-mqtt apscheduler
 
 COPY papago.py /
 COPY run.sh /
