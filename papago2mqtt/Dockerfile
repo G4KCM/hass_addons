@@ -5,7 +5,7 @@ ENV LANG C.UTF-8
 
 RUN apk add --no-cache python3
 RUN pip3 install paho-mqtt
-RUN pip install apscheduler
+RUN pip3 install APScheduler
 
 COPY papago.py /
 COPY run.sh /
