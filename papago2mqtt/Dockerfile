@@ -1,11 +1,11 @@
-ARG BUILD_FROM=hassioaddons/base:7.1.0
+ARG BUILD_FROM
 FROM $BUILD_FROM
 
 ENV LANG C.UTF-8
 
 RUN apk add --no-cache python3
 RUN pip3 install paho-mqtt
-RUN pip3 install APScheduler
+RUN pip3 install apscheduler
 
 COPY papago.py /
 COPY run.sh /

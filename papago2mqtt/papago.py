@@ -1,6 +1,5 @@
 import os
 import sys
-import json
 import urllib.request
 import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
