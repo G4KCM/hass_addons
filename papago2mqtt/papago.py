@@ -1,9 +1,9 @@
 import os
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 import paho.mqtt.client as mqtt
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 MQTTBROKERHOST = sys.argv[1]
 MQTTBROKERPORT = int(sys.argv[2])
@@ -34,13 +34,7 @@ def settemps():
         sensorname = sensor.attrib['name'].lower().replace(" ", "_")
         jsonstring = "{\"temperature\":\""+sensor.attrib['val']+"\", \"humidity\":\""+sensor.attrib['val2']+"\"}"
         client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
+    time.sleep(REFRESHSECONDS)
 
-if __name__ == '__main__':
-    scheduler = BlockingScheduler()
-    scheduler.add_job(settemps, 'interval', seconds=REFRESHSECONDS)
-    print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
-
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        pass
+while True:
+    settemps()
