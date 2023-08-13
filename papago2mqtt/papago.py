@@ -37,9 +37,10 @@ try:
             jsonstring = "{\"temperature\":\""+sensor.attrib['val']+"\", \"humidity\":\""+sensor.attrib['val2']+"\"}"
             client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
         time.sleep(REFRESHSECONDS)
-except:
-    print("Error retrieving papago data")
+except Exception as e:
+    print("Error retrieving papago data: "+e)
 finally:
     print("going into finally now")
+    time.sleep(5)
     client.publish("papago/online", payload="0", qos=0, retain=True)
     print("should have published online here")
