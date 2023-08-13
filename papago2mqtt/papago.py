@@ -38,4 +38,6 @@ try:
             client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
         time.sleep(REFRESHSECONDS)
 except:
+    print("Error retrieving papago data")
+finally:
     client.publish("papago/online", payload="0", qos=0, retain=True)
