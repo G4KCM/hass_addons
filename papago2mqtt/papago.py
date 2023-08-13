@@ -40,4 +40,6 @@ try:
 except:
     print("Error retrieving papago data")
 finally:
+    print("going into finally now")
     client.publish("papago/online", payload="0", qos=0, retain=True)
+    print("should have published online here")
