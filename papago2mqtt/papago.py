@@ -24,8 +24,8 @@ lst = tree.findall('.//{http://www.papouch.com/xml/papago/act}sns')
 for item in lst:
     id = item.attrib['id']
     sensorname = item.attrib['name']
-    client.publish("homeassistant/sensor/"+dev+"/temp"+id+"/config", "{\"name\":\""+sensorname+" Temperature\",\"device_class\":\"temperature\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"availability_topic\":\"papago/"+dev+"/available\",\"value_template\": \"{{ value_json.temperature}}\",\"unit_of_measurement\":\"°C\",\"unique_id\":\""+dev+"_T_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"}}" ,qos=0,retain=True)
-    client.publish("homeassistant/sensor/"+dev+"/hum"+id+"/config", "{\"name\":\""+sensorname+" Humidity\",\"device_class\":\"humidity\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"availability_topic\":\"papago/"+dev+"/available\",\"value_template\": \"{{ value_json.humidity}}\",\"unit_of_measurement\":\"%\",\"unique_id\":\""+dev+"_H_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"}}" ,qos=0,retain=True)
+    client.publish("homeassistant/sensor/"+dev+"/temp"+id+"/config", "{\"name\":\""+sensorname+" Temperature\",\"device_class\":\"temperature\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"availability_topic\":\"papago/online\",\"value_template\": \"{{ value_json.temperature}}\",\"unit_of_measurement\":\"°C\",\"unique_id\":\""+dev+"_T_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"},\"payload_available\":\"1\",\"payload_not_available\":\"0\"}" ,qos=0,retain=True)
+    client.publish("homeassistant/sensor/"+dev+"/hum"+id+"/config", "{\"name\":\""+sensorname+" Humidity\",\"device_class\":\"humidity\",\"state_topic\":\"papago/"+sensorname.lower().replace(" ", "_")+"/state\",\"availability_topic\":\"papago/online\",\"value_template\": \"{{ value_json.humidity}}\",\"unit_of_measurement\":\"%\",\"unique_id\":\""+dev+"_H_"+id+"\", \"device\": {\"identifiers\":[\""+dev+"\"], \"name\":\""+dev+"\", \"manufacturer\":\"Papouch\", \"model\":\"Papago 2TH WIFI\"},\"payload_available\":\"1\",\"payload_not_available\":\"0\"}" ,qos=0,retain=True)
 
 def settemps():
     opener = urllib.request.build_opener()
@@ -36,9 +36,9 @@ def settemps():
         client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
     time.sleep(REFRESHSECONDS)
 
-client.publish("papago/"+dev+"/available", payload="Online", qos=0, retain=True)
+client.publish("papago/online", payload="1", qos=0, retain=True)
 while True:
     try:
         settemps()
     except:
-        client.publish("papago/"+dev+"/available", payload="Offline", qos=0, retain=True)
+        client.publish("papago/online", payload="0", qos=0, retain=True)
