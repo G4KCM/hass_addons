@@ -17,6 +17,7 @@ client.username_pw_set(MQTTUSERNAME, MQTTPASSWORD)
 client.connect_async(MQTTBROKERHOST, MQTTBROKERPORT, 60)
 client.loop_start()
 
+time.sleep(5)
 try:
     opener = urllib.request.build_opener()
     tree = ET.parse(opener.open("http://%s/fresh.xml" % PAPAGOIP))
@@ -37,10 +38,7 @@ try:
             jsonstring = "{\"temperature\":\""+sensor.attrib['val']+"\", \"humidity\":\""+sensor.attrib['val2']+"\"}"
             client.publish("papago/"+sensorname+"/state", payload=jsonstring, qos=0, retain=True)
         time.sleep(REFRESHSECONDS)
-except Exception as e:
-    print("Error retrieving papago data: "+e)
+except:
+    print("Error retrieving papago data. Exiting..")
 finally:
-    print("going into finally now")
-    time.sleep(5)
     client.publish("papago/online", payload="0", qos=0, retain=True)
-    print("should have published online here")
