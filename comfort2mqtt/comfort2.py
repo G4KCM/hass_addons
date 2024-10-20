@@ -22,7 +22,7 @@ import threading
 from datetime import timedelta
 import paho.mqtt.client as mqtt
 
-DOMAIN = "comfort"
+DOMAIN = "comfort2"
 ALARMSTATETOPIC = DOMAIN+"/alarm"
 ALARMCOMMANDTOPIC = DOMAIN+"/alarm/set"
 ALARMAVAILABLETOPIC = DOMAIN+"/alarm/online"
